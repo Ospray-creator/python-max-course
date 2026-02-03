@@ -5,6 +5,7 @@ def main():
 
     with open("hello.txt", "w", encoding="utf-8") as f:
         f.write(greeting)
-    
+
+
 if __name__ == "__main__":
     main()

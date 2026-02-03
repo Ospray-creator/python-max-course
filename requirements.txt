@@ -1,3 +1,4 @@
+#
+pytest
 black
-nflake8
-npytest
+flake8
