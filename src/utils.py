@@ -1,59 +1,80 @@
+# src/utils.py
 import string
-from typing import List, Dict, Tuple, Iterable
+from collections import Counter
+from typing import List, Dict, Iterable, Tuple
 
 
-def unique_sorted(nums: List[int]) -> List[int] | None:
-    """Возвращает отсортированный список уникальных чисел.
-
-    Пример
-    ------
-    >>> unique_sorted([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
-    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+def unique_sorted(nums: List[int]) -> List[int]:
     """
-    if not nums:
-        return None
-    return sorted(set(nums))
-
-
-def char_counter(text: str) -> Dict[str, int]:
-    """Возвращает словарь с количеством вхождений каждого символа в тексте.
-
-    Пример
-    ------
-    >>> char_counter("Hello, World!")
-    {'h': 1, 'e': 1, 'l': 3, 'o': 2, 'w': 1, 'r': 1, 'd': 1}
-
-    Использует dict comprehension.
-
-    Игнорируй пробелы и знаки пунктуации (string.punctuation).
+    Возвращает отсортированный список без дублирования.
     """
-    text_lower = text.lower()
-    return {
-        char: text_lower.count(char)
-        for char in text_lower
-        if char not in string.punctuation and char != " "
-    }
+    # Параллельно демонстрируем альтернативный синтаксис { *nums }
+    return sorted({*nums})
 
 
 def square_even(nums: List[int]) -> List[int]:
-    """Возвращает список квадратов четных чисел"""
-    return [num**2 for num in nums if num % 2 == 0]
+    """
+    Возвращает список квадратов чётных чисел.
+    """
+    return [x * x for x in nums if x % 2 == 0]
+
+
+def char_counter(text: str, ignore_case: bool = True) -> Dict[str, int]:
+    """
+    Подсчитывает количество символов в строке (без пробелов и пунктуации).
+
+    Parameters
+    ----------
+    text : str
+        Исходный текст.
+    ignore_case : bool, optional
+        Игнорировать регистр, по умолчанию True.
+    """
+    # Приводим к нижнему регистру, если требуется
+    work = text.lower() if ignore_case else text
+
+    # отбрасываем пробелы и знаки пунктуации
+    filtered = (c for c in work if c.isalpha())
+    return dict(Counter(filtered))
 
 
 def top_n_common(chars: Dict[str, int], n: int = 5) -> List[Tuple[str, int]]:
-    """Возвращает n самых частых символов"""
+    """
+    Возвращает n самых часто встречающихся символов.
+    """
     return sorted(chars.items(), key=lambda item: item[1], reverse=True)[:n]
 
 
 def calc_avg(numbers: Iterable[int | float], ignore_zero: bool = False) -> float:
     """
-    Возвращает среднее арифметическое значений в ``numbers``.
-    Если ``ignore_zero`` == True – нули в набор не учитываются.
+    Среднее арифметическое последовательности.
 
-    Использует list comprehension.
+    Parameters
+    ----------
+    numbers : iterable of int/float
+        Исходные значения.
+    ignore_zero : bool, optional
+        Не учитывать нули (по умолчанию False).
+
+    Returns
+    -------
+    float
+        Среднее значение.
+
+    Raises
+    ------
+    ZeroDivisionError
+        Если после фильтрации набор пустой.
     """
+    # 1️⃣ Фильтрация нулей, если требуется
     if ignore_zero:
-        numbers = [num for num in numbers if num != 0]
-    if not numbers:
-        raise ZeroDivisionError("Нельзя подсчитать среднее пустого набора")
-    return sum(numbers) / len(numbers)
+        filtered = [x for x in numbers if x != 0]
+    else:
+        filtered = list(numbers)
+
+    # 2️⃣ Проверка на пустой набор
+    if not filtered:
+        raise ZeroDivisionError("empty sequence after filtering")
+
+    # 3️⃣ Вычисление среднего
+    return sum(filtered) / len(filtered)
