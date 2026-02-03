@@ -35,6 +35,11 @@ def char_counter(text: str) -> Dict[str, int]:
     }
 
 
+def square_even(nums: List[int]) -> List[int]:
+    """Возвращает список квадратов четных чисел"""
+    return [num**2 for num in nums if num % 2 == 0]
+
+
 def top_n_common(chars: Dict[str, int], n: int = 5) -> List[Tuple[str, int]]:
     """Возвращает n самых частых символов"""
     return sorted(chars.items(), key=lambda item: item[1], reverse=True)[:n]
