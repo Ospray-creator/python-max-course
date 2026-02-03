@@ -1,0 +1,3 @@
+black
+nflake8
+npytest
