@@ -1,5 +1,5 @@
 import string
-from typing import List, Dict, Tuple
+from typing import List, Dict, Tuple, Iterable
 
 
 def unique_sorted(nums: List[int]) -> List[int] | None:
@@ -38,3 +38,17 @@ def char_counter(text: str) -> Dict[str, int]:
 def top_n_common(chars: Dict[str, int], n: int = 5) -> List[Tuple[str, int]]:
     """Возвращает n самых частых символов"""
     return sorted(chars.items(), key=lambda item: item[1], reverse=True)[:n]
+
+
+def calc_avg(numbers: Iterable[int | float], ignore_zero: bool = False) -> float:
+    """
+    Возвращает среднее арифметическое значений в ``numbers``.
+    Если ``ignore_zero`` == True – нули в набор не учитываются.
+
+    Использует list comprehension.
+    """
+    if ignore_zero:
+        numbers = [num for num in numbers if num != 0]
+    if not numbers:
+        raise ZeroDivisionError("Нельзя подсчитать среднее пустого набора")
+    return sum(numbers) / len(numbers)
