@@ -27,9 +27,10 @@ def char_counter(text: str) -> Dict[str, int]:
 
     Игнорируй пробелы и знаки пунктуации (string.punctuation).
     """
+    text_lower = text.lower()
     return {
-        char: text.count(char)
-        for char in text
+        char: text_lower.count(char)
+        for char in text_lower
         if char not in string.punctuation and char != " "
     }
 
